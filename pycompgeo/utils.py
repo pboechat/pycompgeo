@@ -68,28 +68,28 @@ def centroid(points):
 
 def orderCW(points, axes = (0, 1)):
     # choose the left bottom most point as anchor
-    anchor = points[0]
+    anchor = (points[0][axes[0]], points[0][axes[1]])
     i = 0
     for j, p in enumerate(points[1:]):
-        if p[axes[0]] < anchor[axes[0]] or (p[axes[0]] == anchor[axes[0]] and p[axes[1]] < anchor[axes[1]]):
-            anchor = p
+        if p[axes[0]] < anchor[0] or (p[axes[0]] == anchor[0] and p[axes[1]] < anchor[1]):
+            anchor = (p[axes[0]], p[axes[1]])
             i = j + 1
     # reverse sort according to angle((0, -1), point - anchor)
-    order = sorted(range(0, len(points)), key = lambda k: -1.0 if k == i else pycompgeo.vec2.angle((0, -1), pycompgeo.vec2.sub(points[k], anchor)), reverse = True)
+    order = sorted(range(0, len(points)), key = lambda k: -1.0 if k == i else pycompgeo.vec2.angle((0, -1), pycompgeo.vec2.sub((points[k][axes[0]], points[k][axes[1]]), anchor)), reverse = True)
     order = order[:-1]
     order.append(i)
     return order
 
 def orderCCW(points, axes = (0, 1)):
     # choose the left bottom most point as anchor
-    anchor = points[0]
+    anchor = (points[0][axes[0]], points[0][axes[1]])
     i = 0
     for j, p in enumerate(points[1:]):
-        if p[axes[0]] < anchor[axes[0]] or (p[axes[0]] == anchor[axes[0]] and p[axes[1]] < anchor[axes[1]]):
-            anchor = p
+        if p[axes[0]] < anchor[0] or (p[axes[0]] == anchor[0] and p[axes[1]] < anchor[1]):
+            anchor = (p[axes[0]], p[axes[1]])
             i = j + 1
     # sort according to angle((0, -1), point - anchor)
-    order = sorted(range(0, len(points)), key = lambda k: -1.0 if k == i else pycompgeo.vec2.angle((0, -1), pycompgeo.vec2.sub(points[k], anchor)))
+    order = sorted(range(0, len(points)), key = lambda k: -1.0 if k == i else pycompgeo.vec2.angle((0, -1), pycompgeo.vec2.sub((points[k][axes[0]], points[k][axes[1]]), anchor)))
     order = order[1:]
     order.insert(0, i)
     return order
